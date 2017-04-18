@@ -1,0 +1,12 @@
+#!/bin/bash
+
+KernelDir="~/LDkernel-N920X-Nougat1"
+
+
+for (( x = 61; x <= 61; x++ )) do
+	y=$[ $x + 1 ]
+wget https://www.kernel.org/pub/linux/kernel/v3.x/incr/patch-3.10.$x-$y.gz -O patch-3.10.$x-$y.gz
+gunzip -d patch-3.10.$x-$y.gz
+patch -p1 < patch-3.10.$x-$y
+
+

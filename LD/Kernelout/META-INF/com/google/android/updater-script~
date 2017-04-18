@@ -1,0 +1,37 @@
+run_program("/sbin/busybox", "mount", "/system");
+run_program("/sbin/busybox", "mount", "/cache");
+run_program("/sbin/busybox", "mount", "/data");
+ui_print("");
+ui_print("Galaxy Note 5 Nougat");
+ui_print("");
+ui_print("");
+ui_print("");
+ui_print("");
+ui_print("");
+ui_print("");
+ui_print("");
+ui_print("");
+ui_print("");
+ui_print("Installing files");
+ui_print("");
+ui_print("");
+package_extract_dir("system", "/system");
+ui_print("Extracting boot image...");
+package_extract_file("boot.img", "/dev/block/platform/15570000.ufs/by-name/BOOT");
+set_progress(0.800000);
+#ROOT
+ui_print("Patching Kernel...");
+run_program("/sbin/busybox", "mount", "-o", "bind", "/dev/urandom", "/dev/random");
+package_extract_dir("supersu", "/tmp/supersu");
+run_program("/sbin/busybox", "unzip", "/tmp/supersu/supersu.zip", "META-INF/com/google/android/*", "-d", "/tmp/supersu");
+run_program("/sbin/busybox", "sh", "/tmp/supersu/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/supersu/supersu.zip");
+run_program("/sbin/busybox", "umount", "/dev/random");
+
+set_perm_recursive(1000, 1000, 0775, 0644, "/system/app");
+set_perm_recursive(1000, 1000, 0775, 0644, "/system/priv-app");
+set_perm_recursive(1000, 1000, 0775, 0644, "/system/framework");
+run_program("/sbin/busybox", "umount", "/system");
+run_program("/sbin/busybox", "umount", "/cache");
+run_program("/sbin/busybox", "umount", "/data");
+ui_print("");
+ui_print("Done.");
